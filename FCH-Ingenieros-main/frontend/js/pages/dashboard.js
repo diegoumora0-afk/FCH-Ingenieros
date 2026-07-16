@@ -12,9 +12,9 @@ const PageDashboard = (() => {
     let report = {}, alertas = [], movimientos = [];
     try {
       [report, alertas, movimientos] = await Promise.all([
-        API.get('/api/reportes/inventario-general'),
-        API.get('/api/materiales/stock-minimo'),
-        API.get('/api/movimientos'),
+        API.get('/api/reportes/inventario-general').catch(() => ({})),
+        API.get('/api/materiales/stock-minimo').catch(() => []),
+        API.get('/api/movimientos').catch(() => []),
       ]);
     } catch (err) {
       main.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><h3>Error al cargar datos</h3><p>${err.message}</p></div>`;

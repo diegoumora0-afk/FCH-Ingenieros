@@ -116,6 +116,19 @@ async function loadPage(page) {
   console.log(`[loadPage] #${currentCount} page="${page}" hash="${location.hash}"`);
 
   const entry = PAGES[page] || PAGES.dashboard;
+  
+  // Verificación de roles en routing
+  const user = Auth.getUser();
+  if (user) {
+    const role = (user.rol || '').toLowerCase();
+    const link = document.getElementById(`nav-${page}`);
+    if (link && link.dataset.roles && !link.dataset.roles.split(',').includes(role)) {
+      showToast('warning', 'Acceso denegado', 'No tienes permisos para ver esta sección.');
+      navigate('dashboard');
+      return;
+    }
+  }
+
   document.getElementById('header-title').textContent = entry.title;
   activateLink(page);
   const main = document.getElementById('main-content');
@@ -149,6 +162,31 @@ function showApp(user) {
   document.getElementById('header-avatar').textContent = initials;
   document.getElementById('header-user-name').textContent = user.nombreCompleto || user.username;
   document.getElementById('header-user-role').textContent = user.rol || '';
+
+  // Aplicar permisos en la barra lateral según el rol
+  const role = (user.rol || '').toLowerCase();
+  document.querySelectorAll('.sidebar__link').forEach(link => {
+    const rolesStr = link.dataset.roles;
+    if (!rolesStr || rolesStr.split(',').includes(role)) {
+      link.style.display = '';
+    } else {
+      link.style.display = 'none';
+    }
+  });
+
+  // Ocultar títulos de sección si no tienen enlaces visibles
+  document.querySelectorAll('.sidebar__section-title').forEach(title => {
+    let next = title.nextElementSibling;
+    let hasVisibleLinks = false;
+    while (next && next.classList.contains('sidebar__link')) {
+      if (next.style.display !== 'none') {
+        hasVisibleLinks = true;
+        break;
+      }
+      next = next.nextElementSibling;
+    }
+    title.style.display = hasVisibleLinks ? '' : 'none';
+  });
 }
 
 function showLogin() {
