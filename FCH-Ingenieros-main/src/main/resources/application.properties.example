@@ -1,0 +1,18 @@
+spring.application.name=wms
+
+# ─── Base de datos: Neon PostgreSQL (Cloud) ───────────────────────────────────
+# Copia este archivo como application.properties y rellena con tus credenciales de neon.tech
+spring.datasource.url=jdbc:postgresql://EP_HOST/wms_fch?sslmode=require
+spring.datasource.username=TU_USUARIO_NEON
+spring.datasource.password=TU_PASSWORD_NEON
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+spring.jackson.serialization.write-dates-as-timestamps=false
+
+# JWT
+jwt.secret=CAMBIA_ESTA_CLAVE_POR_UNA_SEGURA
+jwt.expiration=86400000

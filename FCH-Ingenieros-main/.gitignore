@@ -1,0 +1,27 @@
+# Maven
+target/
+*.class
+*.jar
+*.war
+
+# IntelliJ / VS Code
+.idea/
+*.iml
+.vscode/
+
+# Spring Boot: no subir credenciales reales a GitHub
+src/main/resources/application.properties
+
+# Subir el template con placeholders en su lugar
+!src/main/resources/application.properties.example
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python scripts temporales
+generate_spring.py
